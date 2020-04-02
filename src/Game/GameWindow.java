@@ -2,8 +2,10 @@ package Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Scanner;
 
-public class GameWindow extends JPanel implements GameManager{
+public class GameWindow extends JPanel implements GameManager {
 
     Spot[][] cells;
     Spot[][] board;
@@ -23,38 +25,39 @@ public class GameWindow extends JPanel implements GameManager{
 
     }
 
-    Player black = new Player();
-    Player white = new Player();
+    Player black = new Player(true, Color.BLACK); //Speler controlled
+    Player white = new PlayerAi(false, Color.WHITE); //Ai controlled
 
-    public GameWindow()
-    {
-        this.setBackground(Color.WHITE); //TODO moet groen worden denk ik
+    public GameWindow() {
         this.setLayout(new BorderLayout());
 
         JPanel reversiBoard = new JPanel();
-        reversiBoard.setLayout(new GridLayout(8,8));
-        reversiBoard.setPreferredSize(new Dimension(500,500));
-        reversiBoard.setBackground(new Color(41,100, 59));
+        reversiBoard.setLayout(new GridLayout(8, 8));
+        reversiBoard.setPreferredSize(new Dimension(500, 500));
+        reversiBoard.setBackground(new Color(40, 100, 60));
 
         //maak de vakjes
         cells = new Spot[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                cells[i][j] = new Spot(this,reversiBoard,i,j);
+                cells[i][j] = new Spot(this, reversiBoard, i, j);
                 reversiBoard.add(cells[i][j]);
             }
         }
 
+        //Zet begin steentjes
         cells[4][4].color = 2;
         cells[4][3].color = 1;
         cells[3][4].color = 1;
         cells[3][3].color = 2;
-        JPanel sidebar = new JPanel();
-        sidebar.setLayout(new BoxLayout(sidebar,BoxLayout.Y_AXIS));
-        sidebar.setPreferredSize(new Dimension(200,0));
-        sidebar.setBackground(Color.BLUE);
 
-        this.add(sidebar,BorderLayout.WEST);
+        //Een sidebar om gegevens zoals scores in weer te geven
+        JPanel sidebar = new JPanel();
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
+        sidebar.setPreferredSize(new Dimension(200, 0));
+        sidebar.setBackground(Color.WHITE);
+
+        this.add(sidebar, BorderLayout.WEST);
         this.add(reversiBoard);
     }
 }
